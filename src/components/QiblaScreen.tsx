@@ -45,7 +45,7 @@ export const QiblaScreen = () => {
                             <Compass className="w-10 h-10 animate-pulse" style={{ color: accentColor }} />
                         </div>
                     </div>
-                    <p className="text-app-text-dim font-light">Loading location...</p>
+                    <p className="font-light" style={{ color: 'var(--text-dim)' }}>Loading location...</p>
                 </div>
             </div>
         );
@@ -55,7 +55,7 @@ export const QiblaScreen = () => {
         return (
             <div className="flex items-center justify-center h-full px-6">
                 <div className="text-center max-w-md">
-                    <p className="text-app-text-dim mb-6 font-light">
+                    <p className="mb-6 font-light" style={{ color: 'var(--text-dim)' }}>
                         {locationError || qiblaError || 'Unable to calculate Qibla direction'}
                     </p>
                     <button
@@ -85,9 +85,9 @@ export const QiblaScreen = () => {
             {!permissionGranted && showPermissionPrompt && (
                 <div className="mb-8 w-full max-w-md animate-fade-in">
                     <div className="relative overflow-hidden">
-                        <div className="absolute inset-0 bg-gradient-to-br from-app-card/40 to-app-card/20 rounded-3xl backdrop-blur-glass border border-white/10" />
+                        <div className="absolute inset-0 rounded-3xl" style={{ background: 'var(--card)', border: '1px solid var(--border-card)', boxShadow: 'var(--shadow)' }} />
                         <div className="relative p-6">
-                            <p className="text-app-text-dim mb-4 text-sm font-light leading-relaxed">
+                            <p className="mb-4 text-sm font-light leading-relaxed" style={{ color: 'var(--text-dim)' }}>
                                 Enable device orientation to use the live compass
                             </p>
                             <button
@@ -103,7 +103,7 @@ export const QiblaScreen = () => {
             )}
 
             <div className="text-center mb-10">
-                <p className="text-app-text-dim text-xs uppercase tracking-widest mb-3 font-semibold">
+                <p className="text-xs uppercase tracking-widest mb-3 font-semibold" style={{ color: 'var(--text-dim)' }}>
                     Qibla Direction
                 </p>
                 <h1
@@ -128,10 +128,12 @@ export const QiblaScreen = () => {
                         absolute inset-0 rounded-full transition-all duration-500
                         ${isAligned
                             ? 'animate-pulse-slow'
-                            : 'bg-gradient-to-br from-app-card/40 to-app-card/20 backdrop-blur-glass border border-white/10'
+                            : ''
                         }
                     `}
-                    style={isAligned ? { backgroundColor: `${accentColor}33`, boxShadow: `0 0 40px ${accentColor}25` } : undefined}
+                    style={isAligned
+                        ? { backgroundColor: `${accentColor}33`, boxShadow: `0 0 40px ${accentColor}25` }
+                        : { background: 'var(--card)', border: '1px solid var(--border-card)' }}
                 />
 
                 {/* Compass visualization */}
@@ -222,7 +224,7 @@ export const QiblaScreen = () => {
 
             {!permissionGranted && (
                 <div className="mt-10 text-center">
-                    <p className="text-app-text-dim/60 text-xs font-light">
+                    <p className="text-xs font-light" style={{ color: 'var(--text-dim)', opacity: 0.6 }}>
                         Static direction shown. Enable compass for live orientation.
                     </p>
                 </div>

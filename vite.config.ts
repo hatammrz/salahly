@@ -1,26 +1,18 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import { VitePWA } from 'vite-plugin-pwa'
-import basicSsl from '@vitejs/plugin-basic-ssl'
 
 export default defineConfig({
-    server: {
-        host: true,          // expose to network
-        https: true,         // enable HTTPS
-        port: 5173
-    },
-
     plugins: [
         react(),
-        basicSsl(),
 
         VitePWA({
             registerType: 'autoUpdate',
             includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'icon.svg'],
             manifest: {
-                name: 'Salahly – Prayer & Qibla Companion',
-                short_name: 'Salahly',
-                description: 'Minimal Islamic prayer times and Qibla compass',
+                name: 'Qamar – Prayer & Qibla Companion',
+                short_name: 'Qamar',
+                description: 'Qamar is a minimal, privacy-focused prayer time, Qibla, and fasting companion.',
                 theme_color: '#0B1220',
                 background_color: '#0B1220',
                 display: 'standalone',

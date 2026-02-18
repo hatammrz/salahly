@@ -2,10 +2,54 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── Theme tokens ────────────────────────────────────────────────────────── */
+/* Light mode (default) */
+:root {
+  --bg: #F8F7F4;
+  --bg-light: #EEECEA;
+  --card: #FFFFFF;
+  --card-dim: rgba(255, 255, 255, 0.7);
+  --text: #1E293B;
+  --text-dim: #64748B;
+  --border: rgba(0, 0, 0, 0.07);
+  --border-card: rgba(0, 0, 0, 0.06);
+  --shadow: 0 4px 24px rgba(0, 0, 0, 0.07);
+  --accent: #15803D;
+  --accent-dim: #166534;
+  --accent-glow: rgba(21, 128, 61, 0.15);
+  /* Ramadan gold stays the same in both themes */
+  --ramadan: #B45309;
+  --ramadan-dim: #92400E;
+}
+
+/* Dark mode */
+.dark {
+  --bg: #0B1220;
+  --bg-light: #1a2332;
+  --card: #1E293B;
+  --card-dim: rgba(30, 41, 59, 0.7);
+  --text: #F1F5F9;
+  --text-dim: #94A3B8;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-card: rgba(255, 255, 255, 0.05);
+  --shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+  --accent: #34D399;
+  --accent-dim: #10B981;
+  --accent-glow: rgba(52, 211, 153, 0.15);
+  --ramadan: #C6A95E;
+  --ramadan-dim: #D4B76E;
+}
+
+/* ── Smooth theme transition ─────────────────────────────────────────────── */
+html {
+  transition: background-color 200ms ease, color 200ms ease;
+}
+
+/* ── Base styles ─────────────────────────────────────────────────────────── */
 body {
   margin: 0;
-  background: #0B1220;
-  color: #F1F5F9;
+  background: var(--bg);
+  color: var(--text);
   font-family: 'Inter', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -21,4 +65,29 @@ body {
 
 html {
   scroll-behavior: smooth;
+}
+
+/* ── Utility classes using CSS vars ──────────────────────────────────────── */
+.theme-bg {
+  background-color: var(--bg);
+}
+
+.theme-card {
+  background-color: var(--card);
+}
+
+.theme-text {
+  color: var(--text);
+}
+
+.theme-text-dim {
+  color: var(--text-dim);
+}
+
+.theme-border {
+  border-color: var(--border);
+}
+
+.theme-accent {
+  color: var(--accent);
 }

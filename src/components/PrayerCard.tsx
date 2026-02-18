@@ -18,9 +18,7 @@ export const PrayerCard = ({ name, time, isNext, isPast }: PrayerCardProps) => {
         (settings.ramadanMode === 'auto' && isRamadan());
 
     const timeFormatStr = settings.timeFormat === '12' ? 'h:mm a' : 'HH:mm';
-
-    const accentColor = inRamadan ? '#C6A95E' : '#34D399';
-    const textColor = '#F1F5F9';
+    const accentColor = inRamadan ? 'var(--ramadan)' : 'var(--accent)';
 
     return (
         <div
@@ -30,20 +28,20 @@ export const PrayerCard = ({ name, time, isNext, isPast }: PrayerCardProps) => {
                 ${isNext ? 'scale-[1.02]' : 'hover:scale-[1.01]'}
             `}
         >
-            {/* Glassmorphism card */}
+            {/* Card background */}
             <div
-                className={`
-                    absolute inset-0 rounded-3xl backdrop-blur-glass
-                    ${isNext
-                        ? 'border-2'
-                        : 'bg-gradient-to-br from-app-card/40 to-app-card/20 border border-white/5'
-                    }
-                `}
+                className="absolute inset-0 rounded-3xl"
                 style={isNext ? {
-                    background: `linear-gradient(to bottom right, ${accentColor}33, ${accentColor}0D)`,
-                    borderColor: `${accentColor}4D`,
-                    boxShadow: `0 0 40px ${accentColor}25`
-                } : undefined}
+                    background: inRamadan
+                        ? 'linear-gradient(to bottom right, rgba(180,83,9,0.18), rgba(180,83,9,0.06))'
+                        : 'linear-gradient(to bottom right, rgba(52,211,153,0.15), rgba(52,211,153,0.05))',
+                    border: `2px solid ${accentColor}4D`,
+                    boxShadow: `0 0 40px ${accentColor}20`,
+                } : {
+                    background: 'var(--card)',
+                    border: '1px solid var(--border-card)',
+                    boxShadow: 'var(--shadow)',
+                }}
             />
 
             {/* Content */}
@@ -52,14 +50,14 @@ export const PrayerCard = ({ name, time, isNext, isPast }: PrayerCardProps) => {
                     <h3
                         className="font-display text-lg tracking-wide"
                         style={{
-                            color: isNext ? accentColor : textColor,
-                            fontWeight: isNext ? 'bold' : '600'
+                            color: isNext ? accentColor : 'var(--text)',
+                            fontWeight: isNext ? 'bold' : '600',
                         }}
                     >
                         {name}
                     </h3>
                     {isNext && timeRemaining && (
-                        <p className="text-app-text-dim text-sm mt-1 font-light">
+                        <p className="text-sm mt-1 font-light" style={{ color: 'var(--text-dim)' }}>
                             in {timeRemaining.hours}h {timeRemaining.minutes}m {timeRemaining.seconds}s
                         </p>
                     )}
@@ -68,8 +66,8 @@ export const PrayerCard = ({ name, time, isNext, isPast }: PrayerCardProps) => {
                     <p
                         className="font-mono text-xl tracking-wide"
                         style={{
-                            color: isNext ? accentColor : textColor,
-                            fontWeight: isNext ? 'bold' : 'normal'
+                            color: isNext ? accentColor : 'var(--text)',
+                            fontWeight: isNext ? 'bold' : 'normal',
                         }}
                     >
                         {format(time, timeFormatStr)}
@@ -77,7 +75,7 @@ export const PrayerCard = ({ name, time, isNext, isPast }: PrayerCardProps) => {
                 </div>
             </div>
 
-            {/* Subtle hover glow for non-active cards */}
+            {/* Hover glow for non-active cards */}
             {!isNext && !isPast && (
                 <div
                     className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"

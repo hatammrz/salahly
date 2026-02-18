@@ -1,36 +1,51 @@
 import { useState } from 'react';
+import { useAuth } from './context/AuthContext';
 import { useSettings } from './contexts/SettingsContext';
 import { isRamadan } from './utils/hijriUtils';
 import { HomeScreen } from './components/HomeScreen';
 import { QiblaScreen } from './components/QiblaScreen';
 import { FastingJournal } from './components/FastingJournal';
 import { SettingsScreen } from './components/SettingsScreen';
+import { AccountScreen } from './components/AccountScreen';
 import { BottomNav } from './components/BottomNav';
 
-function App() {
-    const [activeTab, setActiveTab] = useState<'home' | 'qibla' | 'fasting' | 'settings'>('home');
-    const { settings } = useSettings();
+type Tab = 'home' | 'qibla' | 'fasting' | 'settings' | 'account';
 
-    // Determine if Ramadan mode is active
+function App() {
+    const [activeTab, setActiveTab] = useState<Tab>('home');
+    const { settings } = useSettings();
+    const { loading } = useAuth();
+
     const inRamadanMode = settings.ramadanMode === 'on' ||
         (settings.ramadanMode === 'auto' && isRamadan());
 
-    // Dynamic background and accent colors based on Ramadan mode
-    const backgroundStyle = inRamadanMode
-        ? 'bg-[#050505]' // Deep black for Ramadan
+    // Background: CSS vars handle light/dark automatically.
+    // Only override for Ramadan deep-black or OLED modes.
+    const bgStyle = inRamadanMode
+        ? { backgroundColor: '#050505' }
         : settings.backgroundMode === 'oled'
-            ? 'bg-black'
-            : settings.backgroundMode === 'animated'
-                ? 'bg-gradient-to-br from-app-bg via-app-bg-light to-app-bg'
-                : 'bg-gradient-to-br from-app-bg to-app-bg-light';
+            ? { backgroundColor: '#000000' }
+            : {};
+
+    if (loading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--bg)' }}>
+                <div className="w-8 h-8 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: 'var(--accent)', borderTopColor: 'transparent' }} />
+            </div>
+        );
+    }
 
     return (
-        <div className={`min-h-screen ${backgroundStyle} flex flex-col transition-colors duration-1000`}>
+        <div
+            className="min-h-screen flex flex-col transition-colors duration-200"
+            style={{ background: bgStyle.backgroundColor ?? 'var(--bg)', color: 'var(--text)' }}
+        >
             <main className="flex-1 overflow-hidden">
                 {activeTab === 'home' && <HomeScreen />}
                 {activeTab === 'qibla' && <QiblaScreen />}
                 {activeTab === 'fasting' && <FastingJournal />}
                 {activeTab === 'settings' && <SettingsScreen />}
+                {activeTab === 'account' && <AccountScreen />}
             </main>
 
             <BottomNav activeTab={activeTab} onTabChange={setActiveTab} />

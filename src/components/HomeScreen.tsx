@@ -5,6 +5,7 @@ import { isRamadan } from '../utils/hijriUtils';
 import { CountdownHero } from './CountdownHero';
 import { PrayerCard } from './PrayerCard';
 import { DailyIntention } from './DailyIntention';
+import { DhikrCard } from './DhikrCard';
 
 export const HomeScreen = () => {
     const { latitude, longitude, loading: locationLoading, error: locationError } = useGeolocation();
@@ -108,6 +109,8 @@ export const HomeScreen = () => {
             )}
 
             {settings.showDailyIntention && <DailyIntention />}
+
+            <DhikrCard />
 
             <div className="px-6 py-6 space-y-4">
                 <h2 className="font-display text-sm uppercase tracking-widest text-app-text-dim mb-6 font-semibold">

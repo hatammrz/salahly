@@ -1,0 +1,9 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" rx="128" fill="#0B1220"/>
+  <path d="M362.5 256C362.5 314.818 314.818 362.5 256 362.5C197.182 362.5 149.5 314.818 149.5 256C149.5 197.182 197.182 149.5 256 149.5C266.858 149.5 277.243 151.127 286.994 154.14C268.083 167.311 256 189.245 256 214C256 253.764 288.236 286 328 286C341.332 286 353.743 282.368 364.35 276.035C363.136 269.467 362.5 262.809 362.5 256Z" fill="#34D399" fill-opacity="0.9">
+    <animate attributeName="fill-opacity" values="0.7;0.9;0.7" dur="4s" repeatCount="indefinite" />
+  </path>
+  <circle cx="328" cy="180" r="16" fill="#34D399">
+    <animate attributeName="opacity" values="0.4;1;0.4" dur="3s" repeatCount="indefinite" />
+  </circle>
+</svg>
