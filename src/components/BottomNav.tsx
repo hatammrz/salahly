@@ -1,8 +1,8 @@
-import { Home, Compass, Settings, Calendar, User } from 'lucide-react';
+import { Home, Compass, Settings, Calendar, User, Heart } from 'lucide-react';
 import { useSettings } from '../contexts/SettingsContext';
 import { isRamadan } from '../utils/hijriUtils';
 
-type Tab = 'home' | 'qibla' | 'fasting' | 'settings' | 'account';
+type Tab = 'home' | 'qibla' | 'fasting' | 'settings' | 'account' | 'donate';
 
 interface BottomNavProps {
     activeTab: Tab;
@@ -22,6 +22,7 @@ export const BottomNav = ({ activeTab, onTabChange }: BottomNavProps) => {
         { id: 'fasting', icon: Calendar, label: 'Fasting' },
         { id: 'settings', icon: Settings, label: 'Settings' },
         { id: 'account', icon: User, label: 'Account' },
+        { id: 'donate', icon: Heart, label: 'Donate' },
     ];
 
     return (
@@ -42,6 +43,8 @@ export const BottomNav = ({ activeTab, onTabChange }: BottomNavProps) => {
                     {tabs.map((tab) => {
                         const Icon = tab.icon;
                         const isActive = activeTab === tab.id;
+                        const isDonate = tab.id === 'donate';
+                        const tabColor = isDonate ? '#f472b6' : accentColor;
 
                         return (
                             <button
@@ -56,18 +59,18 @@ export const BottomNav = ({ activeTab, onTabChange }: BottomNavProps) => {
                                 {isActive && (
                                     <div
                                         className="absolute inset-0 rounded-2xl"
-                                        style={{ background: `${accentColor}18` }}
+                                        style={{ background: `${tabColor}18` }}
                                     />
                                 )}
 
                                 <Icon
                                     className="relative w-5 h-5 transition-all duration-300"
-                                    style={{ color: isActive ? accentColor : 'var(--text-dim)' }}
+                                    style={{ color: isActive ? tabColor : 'var(--text-dim)' }}
                                     strokeWidth={isActive ? 2.5 : 2}
                                 />
                                 <span
                                     className="relative text-[9px] font-semibold uppercase tracking-wider transition-all duration-300"
-                                    style={{ color: isActive ? accentColor : 'var(--text-dim)' }}
+                                    style={{ color: isActive ? tabColor : 'var(--text-dim)' }}
                                 >
                                     {tab.label}
                                 </span>

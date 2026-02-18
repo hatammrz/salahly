@@ -7,9 +7,10 @@ import { QiblaScreen } from './components/QiblaScreen';
 import { FastingJournal } from './components/FastingJournal';
 import { SettingsScreen } from './components/SettingsScreen';
 import { AccountScreen } from './components/AccountScreen';
+import { DonationsScreen } from './components/DonationsScreen';
 import { BottomNav } from './components/BottomNav';
 
-type Tab = 'home' | 'qibla' | 'fasting' | 'settings' | 'account';
+type Tab = 'home' | 'qibla' | 'fasting' | 'settings' | 'account' | 'donate';
 
 function App() {
     const [activeTab, setActiveTab] = useState<Tab>('home');
@@ -19,8 +20,6 @@ function App() {
     const inRamadanMode = settings.ramadanMode === 'on' ||
         (settings.ramadanMode === 'auto' && isRamadan());
 
-    // Background: CSS vars handle light/dark automatically.
-    // Only override for Ramadan deep-black or OLED modes.
     const bgStyle = inRamadanMode
         ? { backgroundColor: '#050505' }
         : settings.backgroundMode === 'oled'
@@ -45,7 +44,10 @@ function App() {
                 {activeTab === 'qibla' && <QiblaScreen />}
                 {activeTab === 'fasting' && <FastingJournal />}
                 {activeTab === 'settings' && <SettingsScreen />}
-                {activeTab === 'account' && <AccountScreen />}
+                {activeTab === 'account' && (
+                    <AccountScreen onNavigateToDonate={() => setActiveTab('donate')} />
+                )}
+                {activeTab === 'donate' && <DonationsScreen />}
             </main>
 
             <BottomNav activeTab={activeTab} onTabChange={setActiveTab} />

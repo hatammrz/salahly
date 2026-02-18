@@ -1,10 +1,14 @@
 import { useAuth } from '../context/AuthContext';
 import { useState } from 'react';
-import { User, LogOut, Cloud, Mail } from 'lucide-react';
+import { User, LogOut, Cloud, Mail, Heart } from 'lucide-react';
 import { Login } from '../pages/Login';
 import { Register } from '../pages/Register';
 
-export const AccountScreen = () => {
+interface AccountScreenProps {
+    onNavigateToDonate?: () => void;
+}
+
+export const AccountScreen = ({ onNavigateToDonate }: AccountScreenProps) => {
     const { user, logout } = useAuth();
     const [authModal, setAuthModal] = useState<'login' | 'register' | null>(null);
 
@@ -31,7 +35,7 @@ export const AccountScreen = () => {
             <div className="mb-8">
                 <h2 className="font-display text-3xl font-bold mb-2" style={{ color: 'var(--text)' }}>Account</h2>
                 <p className="text-sm font-light" style={{ color: 'var(--text-dim)' }}>
-                    {user ? 'Your Qamar account' : 'Sign in to save your journey'}
+                    {user ? 'Your Salahly account' : 'Sign in to save your journey'}
                 </p>
             </div>
 
@@ -53,7 +57,7 @@ export const AccountScreen = () => {
                             <div className="min-w-0">
                                 <p className="font-semibold text-sm truncate" style={{ color: 'var(--text)' }}>{user.email}</p>
                                 <p className="text-xs mt-0.5" style={{ color: 'var(--text-dim)' }}>
-                                    Member since {new Date(user.createdAt).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+                                    Member since {new Date(user.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
                                 </p>
                             </div>
                         </div>
@@ -86,6 +90,25 @@ export const AccountScreen = () => {
                             </div>
                         </div>
                     </div>
+
+                    {/* Support Us */}
+                    {onNavigateToDonate && (
+                        <button onClick={onNavigateToDonate} className="w-full relative overflow-hidden group">
+                            <div
+                                className="absolute inset-0 rounded-3xl transition-colors"
+                                style={{ background: 'rgba(236,72,153,0.06)', border: '1px solid rgba(236,72,153,0.2)' }}
+                            />
+                            <div className="relative px-6 py-5 flex items-center gap-4">
+                                <div className="w-10 h-10 rounded-xl bg-pink-500/10 flex items-center justify-center">
+                                    <Heart className="w-5 h-5 text-pink-400" strokeWidth={1.5} />
+                                </div>
+                                <div>
+                                    <span className="font-semibold text-pink-400 text-sm">Support Salahly</span>
+                                    <p className="text-xs mt-0.5" style={{ color: 'var(--text-dim)' }}>50% goes to helping Muslims worldwide</p>
+                                </div>
+                            </div>
+                        </button>
+                    )}
 
                     {/* Logout */}
                     <button onClick={logout} className="w-full relative overflow-hidden group">
@@ -143,6 +166,20 @@ export const AccountScreen = () => {
                             <span className="font-semibold text-sm" style={{ color: 'var(--text)' }}>Sign In</span>
                         </div>
                     </button>
+
+                    {/* Support Us (guest) */}
+                    {onNavigateToDonate && (
+                        <button onClick={onNavigateToDonate} className="w-full relative overflow-hidden">
+                            <div
+                                className="absolute inset-0 rounded-2xl"
+                                style={{ background: 'rgba(236,72,153,0.06)', border: '1px solid rgba(236,72,153,0.2)' }}
+                            />
+                            <div className="relative flex items-center justify-center gap-2 py-4">
+                                <Heart className="w-4 h-4 text-pink-400" />
+                                <span className="font-semibold text-sm text-pink-400">Support Salahly</span>
+                            </div>
+                        </button>
+                    )}
                 </div>
             )}
         </div>
