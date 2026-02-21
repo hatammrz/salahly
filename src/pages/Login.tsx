@@ -57,6 +57,7 @@ export const Login = ({ onSwitchToRegister, onClose }: LoginProps) => {
                             <div className="relative">
                                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-app-text-dim" />
                                 <input
+                                    autoComplete="email"
                                     type="email"
                                     placeholder="Email address"
                                     value={email}
@@ -69,6 +70,7 @@ export const Login = ({ onSwitchToRegister, onClose }: LoginProps) => {
                             <div className="relative">
                                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-app-text-dim" />
                                 <input
+                                    autoComplete="current-password"
                                     type={showPassword ? 'text' : 'password'}
                                     placeholder="Password"
                                     value={password}

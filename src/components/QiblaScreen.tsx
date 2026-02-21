@@ -7,12 +7,20 @@ import { Compass } from 'lucide-react';
 
 export const QiblaScreen = () => {
     const { latitude, longitude, loading: locationLoading, error: locationError } = useGeolocation();
-    const { direction, relativeDirection, error: qiblaError, permissionGranted, requestPermission } = useQibla(latitude, longitude);
+    const {
+        direction,
+        deviceHeading,
+        relativeDirection,
+        error: qiblaError,
+        permissionGranted,
+        requestPermission,
+    } = useQibla(latitude, longitude);
     const { settings } = useSettings();
     const [showPermissionPrompt, setShowPermissionPrompt] = useState(true);
     const wasAligned = useRef(false);
 
-    const inRamadan = settings.ramadanMode === 'on' ||
+    const inRamadan =
+        settings.ramadanMode === 'on' ||
         (settings.ramadanMode === 'auto' && isRamadan());
 
     const accentColor = inRamadan ? '#C6A95E' : '#34D399';
@@ -20,12 +28,10 @@ export const QiblaScreen = () => {
 
     const isAligned = relativeDirection !== null && Math.abs(relativeDirection) < 5;
 
-    // Haptic feedback when alignment changes to true
+    // Haptic feedback on alignment
     useEffect(() => {
         if (isAligned && !wasAligned.current) {
-            if (navigator.vibrate) {
-                navigator.vibrate(50);
-            }
+            if (navigator.vibrate) navigator.vibrate([50, 30, 50]);
         }
         wasAligned.current = isAligned;
     }, [isAligned]);
@@ -40,12 +46,17 @@ export const QiblaScreen = () => {
             <div className="flex items-center justify-center h-full">
                 <div className="text-center">
                     <div className="relative w-20 h-20 mx-auto mb-6">
-                        <div className="absolute inset-0 rounded-full animate-ping" style={{ backgroundColor: `${accentColor}33` }} />
+                        <div
+                            className="absolute inset-0 rounded-full animate-ping"
+                            style={{ backgroundColor: `${accentColor}33` }}
+                        />
                         <div className="absolute inset-0 flex items-center justify-center">
                             <Compass className="w-10 h-10 animate-pulse" style={{ color: accentColor }} />
                         </div>
                     </div>
-                    <p className="font-light" style={{ color: 'var(--text-dim)' }}>Loading location...</p>
+                    <p className="font-light" style={{ color: 'var(--text-dim)' }}>
+                        Loading location…
+                    </p>
                 </div>
             </div>
         );
@@ -55,7 +66,14 @@ export const QiblaScreen = () => {
         return (
             <div className="flex items-center justify-center h-full px-6">
                 <div className="text-center max-w-md">
-                    <p className="mb-6 font-light" style={{ color: 'var(--text-dim)' }}>
+                    <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 mx-auto"
+                        style={{ background: `${accentColor}1A` }}>
+                        <Compass className="w-8 h-8" style={{ color: accentColor }} />
+                    </div>
+                    <p className="mb-2 font-semibold" style={{ color: 'var(--text)' }}>
+                        Compass Unavailable
+                    </p>
+                    <p className="mb-6 font-light text-sm" style={{ color: 'var(--text-dim)' }}>
                         {locationError || qiblaError || 'Unable to calculate Qibla direction'}
                     </p>
                     <button
@@ -70,30 +88,47 @@ export const QiblaScreen = () => {
         );
     }
 
+    // Needle rotation: use relativeDirection when compass is active, else don't rotate
+    const needleAngle = relativeDirection ?? 0;
+
     return (
         <div className="h-full flex flex-col items-center justify-center px-6 pb-28 relative">
-            {/* Gold glow overlay when aligned */}
+            {/* Alignment glow overlay */}
             {isAligned && (
                 <div
                     className="absolute inset-0 transition-opacity duration-700 pointer-events-none"
                     style={{
-                        background: `radial-gradient(circle at center, ${accentColor}15 0%, transparent 70%)`
+                        background: `radial-gradient(circle at center, ${accentColor}18 0%, transparent 70%)`,
                     }}
                 />
             )}
 
+            {/* iOS permission prompt */}
             {!permissionGranted && showPermissionPrompt && (
                 <div className="mb-8 w-full max-w-md animate-fade-in">
                     <div className="relative overflow-hidden">
-                        <div className="absolute inset-0 rounded-3xl" style={{ background: 'var(--card)', border: '1px solid var(--border-card)', boxShadow: 'var(--shadow)' }} />
-                        <div className="relative p-6">
-                            <p className="mb-4 text-sm font-light leading-relaxed" style={{ color: 'var(--text-dim)' }}>
-                                Enable device orientation to use the live compass
+                        <div
+                            className="absolute inset-0 rounded-3xl"
+                            style={{
+                                background: 'var(--card)',
+                                border: '1px solid var(--border-card)',
+                                boxShadow: 'var(--shadow)',
+                            }}
+                        />
+                        <div className="relative p-6 text-center space-y-3">
+                            <Compass className="w-8 h-8 mx-auto" style={{ color: accentColor }} />
+                            <p className="font-semibold text-sm" style={{ color: 'var(--text)' }}>
+                                Enable Live Compass
+                            </p>
+                            <p className="text-xs font-light leading-relaxed" style={{ color: 'var(--text-dim)' }}>
+                                Allow device orientation access so the compass needle tracks Qibla in real time.
                             </p>
                             <button
                                 onClick={handleRequestPermission}
                                 className="w-full px-6 py-3 text-white rounded-2xl font-semibold transition-all duration-300"
-                                style={{ background: `linear-gradient(to right, ${accentColor}, ${accentColorDim})` }}
+                                style={{
+                                    background: `linear-gradient(to right, ${accentColor}, ${accentColorDim})`,
+                                }}
                             >
                                 Enable Compass
                             </button>
@@ -102,51 +137,55 @@ export const QiblaScreen = () => {
                 </div>
             )}
 
-            <div className="text-center mb-10">
-                <p className="text-xs uppercase tracking-widest mb-3 font-semibold" style={{ color: 'var(--text-dim)' }}>
+            {/* Degree display */}
+            <div className="text-center mb-8">
+                <p
+                    className="text-xs uppercase tracking-widest mb-2 font-semibold"
+                    style={{ color: 'var(--text-dim)' }}
+                >
                     Qibla Direction
                 </p>
                 <h1
-                    className="font-display text-5xl font-bold text-transparent bg-clip-text drop-shadow-glow"
+                    className="font-display text-5xl font-bold text-transparent bg-clip-text"
                     style={{
-                        backgroundImage: `linear-gradient(to right, ${accentColor}, ${accentColorDim})`
+                        backgroundImage: `linear-gradient(to right, ${accentColor}, ${accentColorDim})`,
                     }}
                 >
                     {Math.round(direction)}°
                 </h1>
+                {deviceHeading !== null && (
+                    <p className="text-xs mt-1 font-light" style={{ color: 'var(--text-dim)', opacity: 0.6 }}>
+                        Heading: {Math.round(deviceHeading)}°
+                    </p>
+                )}
             </div>
 
+            {/* Compass rose */}
             <div
-                className={`
-                    relative w-72 h-72 rounded-full transition-all duration-500
-                    ${isAligned ? 'scale-110' : 'scale-100'}
-                `}
+                className={`relative w-72 h-72 rounded-full transition-all duration-500 ${isAligned ? 'scale-110' : 'scale-100'}`}
             >
                 {/* Outer glow ring */}
                 <div
-                    className={`
-                        absolute inset-0 rounded-full transition-all duration-500
-                        ${isAligned
-                            ? 'animate-pulse-slow'
-                            : ''
-                        }
-                    `}
-                    style={isAligned
-                        ? { backgroundColor: `${accentColor}33`, boxShadow: `0 0 40px ${accentColor}25` }
-                        : { background: 'var(--card)', border: '1px solid var(--border-card)' }}
+                    className={`absolute inset-0 rounded-full transition-all duration-500 ${isAligned ? 'animate-pulse-slow' : ''}`}
+                    style={
+                        isAligned
+                            ? {
+                                backgroundColor: `${accentColor}33`,
+                                boxShadow: `0 0 60px ${accentColor}30`,
+                            }
+                            : {
+                                background: 'var(--card)',
+                                border: '1px solid var(--border-card)',
+                            }
+                    }
                 />
 
-                {/* Compass visualization */}
+                {/* SVG compass */}
                 <div className="absolute inset-0 flex items-center justify-center">
-                    <svg
-                        className="w-full h-full"
-                        viewBox="0 0 200 200"
-                        style={{
-                            transform: relativeDirection !== null ? `rotate(${relativeDirection}deg)` : 'none',
-                            transition: 'transform 0.3s ease-out',
-                        }}
-                    >
-                        {/* Degree tick marks */}
+                    <svg className="w-full h-full" viewBox="0 0 200 200">
+                        {/* ── STATIC LAYER: tick marks + cardinal labels ── */}
+
+                        {/* Degree tick marks (static — do NOT rotate) */}
                         {Array.from({ length: 72 }).map((_, i) => {
                             const angle = i * 5;
                             const isMajor = angle % 90 === 0;
@@ -169,63 +208,89 @@ export const QiblaScreen = () => {
                             );
                         })}
 
-                        {/* Cardinal direction labels */}
-                        <text x="100" y="28" textAnchor="middle" fill="#F1F5F9" fontSize="11" fontWeight="bold" fontFamily="Inter">N</text>
-                        <text x="176" y="104" textAnchor="middle" fill="#94A3B8" fontSize="9" fontWeight="600" fontFamily="Inter">E</text>
-                        <text x="100" y="180" textAnchor="middle" fill="#94A3B8" fontSize="9" fontWeight="600" fontFamily="Inter">S</text>
-                        <text x="24" y="104" textAnchor="middle" fill="#94A3B8" fontSize="9" fontWeight="600" fontFamily="Inter">W</text>
+                        {/* Cardinal direction labels — always fixed to screen */}
+                        <text x="100" y="20" textAnchor="middle" fill="#F1F5F9" fontSize="13" fontWeight="bold" fontFamily="Inter">N</text>
+                        <text x="182" y="105" textAnchor="middle" fill="#94A3B8" fontSize="11" fontWeight="600" fontFamily="Inter">E</text>
+                        <text x="100" y="190" textAnchor="middle" fill="#94A3B8" fontSize="11" fontWeight="600" fontFamily="Inter">S</text>
+                        <text x="18" y="105" textAnchor="middle" fill="#94A3B8" fontSize="11" fontWeight="600" fontFamily="Inter">W</text>
 
-                        {/* Compass needle */}
-                        <g>
+                        {/* ── ROTATING LAYER: needle + Q marker ── */}
+                        <g
+                            transform={`rotate(${needleAngle}, 100, 100)`}
+                            style={{ transition: 'transform 0.15s ease-out' }}
+                        >
                             <defs>
-                                <linearGradient id="needleGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <linearGradient id="needleGradS" x1="0%" y1="0%" x2="0%" y2="100%">
                                     <stop offset="0%" stopColor={isAligned ? accentColor : '#F1F5F9'} />
-                                    <stop offset="100%" stopColor={isAligned ? accentColorDim : '#94A3B8'} />
+                                    <stop offset="50%" stopColor={isAligned ? accentColor : '#94A3B8'} stopOpacity="0.6" />
+                                    <stop offset="100%" stopColor={isAligned ? accentColorDim : '#475569'} stopOpacity="0.4" />
                                 </linearGradient>
                             </defs>
-                            <path
-                                d="M 100 35 L 105 100 L 100 165 L 95 100 Z"
-                                fill="url(#needleGradient)"
-                                className="drop-shadow-lg transition-all duration-300"
+
+                            {/* Qibla marker (Q) at top — this is what you point toward */}
+                            {/* Diamond shape at the qibla end */}
+                            <polygon
+                                points="100,22 106,36 100,44 94,36"
+                                fill={accentColor}
+                                opacity="0.9"
                             />
+                            <text
+                                x="100"
+                                y="18"
+                                textAnchor="middle"
+                                fill={accentColor}
+                                fontSize="10"
+                                fontWeight="800"
+                                fontFamily="Inter"
+                            >
+                                Q
+                            </text>
+
+                            {/* Compass needle body */}
+                            <path
+                                d="M 100 44 L 104 100 L 100 160 L 96 100 Z"
+                                fill="url(#needleGradS)"
+                                opacity="0.85"
+                            />
+
+                            {/* Center pivot */}
                             <circle
                                 cx="100"
                                 cy="100"
-                                r="8"
+                                r="7"
                                 fill={isAligned ? accentColor : '#1E293B'}
                                 stroke={isAligned ? accentColor : '#F1F5F9'}
                                 strokeWidth="2.5"
-                                className="transition-all duration-300"
+                                style={{ transition: 'all 0.3s' }}
                             />
+                            <circle cx="100" cy="100" r="2.5" fill={isAligned ? '#fff' : accentColor} />
                         </g>
                     </svg>
                 </div>
             </div>
 
-            {isAligned && (
+            {/* Alignment badge */}
+            {isAligned ? (
                 <div className="mt-10 text-center animate-fade-in">
                     <div
                         className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl border"
                         style={{
                             backgroundColor: `${accentColor}1A`,
-                            borderColor: `${accentColor}4D`
+                            borderColor: `${accentColor}4D`,
                         }}
                     >
-                        <div
-                            className="w-2 h-2 rounded-full animate-pulse"
-                            style={{ backgroundColor: accentColor }}
-                        />
+                        <div className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: accentColor }} />
                         <p className="font-semibold text-sm" style={{ color: accentColor }}>
-                            Aligned with Qibla
+                            Facing Qibla ✓
                         </p>
                     </div>
                 </div>
-            )}
-
-            {!permissionGranted && (
+            ) : (
                 <div className="mt-10 text-center">
-                    <p className="text-xs font-light" style={{ color: 'var(--text-dim)', opacity: 0.6 }}>
-                        Static direction shown. Enable compass for live orientation.
+                    <p className="text-xs font-light" style={{ color: 'var(--text-dim)', opacity: 0.55 }}>
+                        {permissionGranted
+                            ? 'Rotate device until Q points up'
+                            : 'Enable compass for live orientation'}
                     </p>
                 </div>
             )}

@@ -68,6 +68,7 @@ export const Register = ({ onSwitchToLogin, onClose }: RegisterProps) => {
                             <div className="relative">
                                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-app-text-dim" />
                                 <input
+                                    autoComplete="email"
                                     type="email"
                                     placeholder="Email address"
                                     value={email}
@@ -80,6 +81,7 @@ export const Register = ({ onSwitchToLogin, onClose }: RegisterProps) => {
                             <div className="relative">
                                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-app-text-dim" />
                                 <input
+                                    autoComplete="new-password"
                                     type={showPassword ? 'text' : 'password'}
                                     placeholder="Password (min. 6 characters)"
                                     value={password}
@@ -99,6 +101,7 @@ export const Register = ({ onSwitchToLogin, onClose }: RegisterProps) => {
                             <div className="relative">
                                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-app-text-dim" />
                                 <input
+                                    autoComplete="new-password"
                                     type={showPassword ? 'text' : 'password'}
                                     placeholder="Confirm password"
                                     value={confirmPassword}

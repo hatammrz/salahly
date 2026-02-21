@@ -1,6 +1,8 @@
 import { Heart, Globe, Code2, Users } from 'lucide-react';
 
-const STRIPE_LINK = 'https://donate.stripe.com/your-link-here'; // Replace with your Stripe link
+// TODO: Replace with your Stripe Payment Link from dashboard.stripe.com → Payment Links → New link
+// Format: https://buy.stripe.com/xxxxx
+const STRIPE_LINK = 'https://donate.stripe.com/your-link-here';
 
 const breakdowns = [
     {
@@ -16,7 +18,7 @@ const breakdowns = [
         icon: Code2,
         percent: 25,
         label: 'App Development',
-        description: 'Keeping Salahly free, fast, and improving for everyone.',
+        description: 'Keeping Qamar free, fast, and improving for everyone.',
         color: '#818cf8',
         bg: 'rgba(129,140,248,0.08)',
         border: 'rgba(129,140,248,0.2)',
@@ -25,7 +27,7 @@ const breakdowns = [
         icon: Users,
         percent: 25,
         label: 'Developer Support',
-        description: 'Sustaining the team behind Salahly.',
+        description: 'Sustaining the team behind Qamar.',
         color: '#f59e0b',
         bg: 'rgba(245,158,11,0.08)',
         border: 'rgba(245,158,11,0.2)',
@@ -38,7 +40,7 @@ export const DonationsScreen = () => {
             {/* Header */}
             <div className="mb-8">
                 <h2 className="font-display text-3xl font-bold mb-2" style={{ color: 'var(--text)' }}>
-                    Support Salahly
+                    Support Qamar
                 </h2>
                 <p className="text-sm font-light leading-relaxed" style={{ color: 'var(--text-dim)' }}>
                     Every donation makes a difference — for the app and for Muslims around the world.
@@ -68,7 +70,7 @@ export const DonationsScreen = () => {
                             Give with intention
                         </p>
                         <p className="text-sm leading-relaxed" style={{ color: 'var(--text-dim)' }}>
-                            Salahly is free for everyone. Your support helps us keep it that way while
+                            Qamar is free for everyone. Your support helps us keep it that way while
                             contributing to relief efforts for our brothers and sisters in Gaza, Sudan, and beyond.
                         </p>
                     </div>

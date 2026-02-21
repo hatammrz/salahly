@@ -35,7 +35,7 @@ export const AccountScreen = ({ onNavigateToDonate }: AccountScreenProps) => {
             <div className="mb-8">
                 <h2 className="font-display text-3xl font-bold mb-2" style={{ color: 'var(--text)' }}>Account</h2>
                 <p className="text-sm font-light" style={{ color: 'var(--text-dim)' }}>
-                    {user ? 'Your Salahly account' : 'Sign in to save your journey'}
+                    {user ? 'Your Qamar account' : 'Sign in to save your journey'}
                 </p>
             </div>
 
@@ -103,7 +103,7 @@ export const AccountScreen = ({ onNavigateToDonate }: AccountScreenProps) => {
                                     <Heart className="w-5 h-5 text-pink-400" strokeWidth={1.5} />
                                 </div>
                                 <div>
-                                    <span className="font-semibold text-pink-400 text-sm">Support Salahly</span>
+                                    <span className="font-semibold text-pink-400 text-sm">Support Qamar</span>
                                     <p className="text-xs mt-0.5" style={{ color: 'var(--text-dim)' }}>50% goes to helping Muslims worldwide</p>
                                 </div>
                             </div>
@@ -176,7 +176,7 @@ export const AccountScreen = ({ onNavigateToDonate }: AccountScreenProps) => {
                             />
                             <div className="relative flex items-center justify-center gap-2 py-4">
                                 <Heart className="w-4 h-4 text-pink-400" />
-                                <span className="font-semibold text-sm text-pink-400">Support Salahly</span>
+                                <span className="font-semibold text-sm text-pink-400">Support Qamar</span>
                             </div>
                         </button>
                     )}
