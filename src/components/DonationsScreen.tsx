@@ -2,7 +2,7 @@ import { Heart, Globe, Code2, Users } from 'lucide-react';
 
 // TODO: Replace with your Stripe Payment Link from dashboard.stripe.com → Payment Links → New link
 // Format: https://buy.stripe.com/xxxxx
-const STRIPE_LINK = 'https://donate.stripe.com/your-link-here';
+const STRIPE_LINK = 'https://buy.stripe.com/fZu6oH5wY1BJ44K0Q1cEw00';
 
 const breakdowns = [
     {
